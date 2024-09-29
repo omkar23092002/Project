@@ -40,3 +40,19 @@ org.springframework.core.convert.ConverterNotFoundException: No converter found 
 
  Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed: org.springframework.core.convert.ConverterNotFoundException: No converter found capable of converting from type [java.lang.String] to type [com.bankify.customer.model.PhoneNumber]] with root cause 
 
+
+@Component
+public class StringToPhoneNumber implements Converter<String, PhoneNumber> {
+    @Override
+    public PhoneNumber convert(String source) {
+
+        String[] parts= source.split(":");
+        if(parts.length==2){
+            String countryCode=parts[0];
+            String number=parts[1];
+
+            return new PhoneNumber(countryCode,number);
+        }
+        throw new IllegalArgumentException("Invalid phone number format ");
+    }
+}
